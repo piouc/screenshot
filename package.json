@@ -1,0 +1,47 @@
+{
+  "name": "@piou/screenshot",
+  "version": "1.0.0",
+  "description": "Take full-page screenshots of multiple URLs with TypeScript CLI",
+  "main": "dist/index.js",
+  "bin": {
+    "screenshot": "bin/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run clean && npm run build",
+    "lint": "eslint src/**/*.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "screenshot",
+    "cli",
+    "puppeteer",
+    "typescript",
+    "web",
+    "capture"
+  ],
+  "author": "piouc",
+  "license": "MIT",
+  "type": "module",
+  "files": [
+    "dist/**/*",
+    "bin/**/*",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "dependencies": {
+    "commander": "^14.0.0",
+    "puppeteer": "^24.16.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.10",
+    "typescript": "^5.2.2",
+    "eslint": "^8.53.0",
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/parser": "^6.10.0"
+  }
+}
