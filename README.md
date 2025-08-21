@@ -5,9 +5,9 @@ A TypeScript CLI tool for taking full-page screenshots of multiple URLs using Pu
 ## Features
 
 - Take full-page screenshots of multiple URLs concurrently
-- Configurable viewport dimensions and timeout settings
+- Multiple viewport sizes support with WIDTHxHEIGHT format (e.g., 1000x1000)
 - Automatic scrolling to load lazy-loaded images
-- Organized output with timestamps and URL-based filenames
+- Organized output with size and URL indexing in filenames
 - Built with strict TypeScript for type safety
 
 ## Installation
@@ -36,14 +36,17 @@ screenshot https://example.com https://google.com
 # Custom output directory
 screenshot -o ./my-screenshots https://example.com
 
-# Custom viewport dimensions
-screenshot -w 1920 -h 1080 https://example.com
+# Custom viewport size (WIDTHxHEIGHT format)
+screenshot -s 1920x1080 https://example.com
+
+# Multiple viewport sizes
+screenshot -s 800x600 -s 1200x900 -s 1920x1080 https://example.com
 
 # Custom concurrency and timeout
 screenshot -c 4 -t 60 https://example.com
 
 # Multiple options combined
-screenshot -o ./output -w 1920 -h 1080 -c 2 -t 30 https://example.com https://google.com
+screenshot -o ./output -s 1920x1080 -s 800x600 -c 2 -t 30 https://example.com https://google.com
 ```
 
 ### NPX Usage
@@ -55,21 +58,24 @@ npx @piouc/screenshot https://example.com
 ## Options
 
 - `-o, --output <dir>`: Output directory for screenshots (default: ./screenshots)
-- `-w, --width <width>`: Viewport width in pixels (default: 1440)
-- `-h, --height <height>`: Viewport height in pixels (default: 1080)
+- `-s, --size <size>`: Viewport size in WIDTHxHEIGHT format (e.g., 1000x1000). Can be specified multiple times for multiple sizes (default: 1440x1080)
 - `-c, --concurrency <number>`: Number of parallel screenshots (default: 8)
 - `-t, --timeout <seconds>`: Page load timeout in seconds (default: 30)
 
 ## Output
 
 Screenshots are saved with descriptive filenames that include:
-- Zero-padded sequence number (when multiple URLs)
+- Size index (zero-padded, 2 digits)
+- URL index (zero-padded, 2 digits)
 - Timestamp
+- Viewport size (WIDTHxHEIGHT)
 - Hostname and path from the URL
 
-Example filenames:
-- `01_2024-01-15_10-30-45_example_com.png`
-- `02_2024-01-15_10-30-47_google_com_search.png`
+Example filenames with multiple sizes and URLs:
+- `01_01_2024-01-15_10-30-45_800x600_example_com.png` (Size 1, URL 1)
+- `01_02_2024-01-15_10-30-47_800x600_google_com.png` (Size 1, URL 2)
+- `02_01_2024-01-15_10-30-49_1200x900_example_com.png` (Size 2, URL 1)
+- `02_02_2024-01-15_10-30-51_1200x900_google_com.png` (Size 2, URL 2)
 
 ## Development
 
@@ -106,7 +112,7 @@ npm run lint
 ├── src/
 │   └── index.ts          # Main CLI application
 ├── bin/
-│   └── screenshot-cli.js # Executable entry point
+│   └── cli.js            # Executable entry point
 ├── dist/                 # Compiled JavaScript output
 ├── tsconfig.json        # TypeScript configuration
 ├── package.json         # Package configuration
