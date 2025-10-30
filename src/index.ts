@@ -37,13 +37,9 @@ program
   .version('1.0.0')
   .description('Take full-page screenshots of multiple URLs')
   .option('-o, --output <dir>', 'Output directory for screenshots', './screenshots')
-  .option('-s, --size <size>', 'Viewport size in WIDTHxHEIGHT format (e.g., 1000x1000)', (value, previous) => {
-    // If this is the first custom size and we have the default, replace it
-    if (previous && previous.length === 1 && previous[0] === '1440x1080') {
-      return [value];
-    }
-    return previous ? [...previous, value] : [value];
-  }, ['1440x1080'])
+  .option('-s, --size <size>', 'Viewport size in WIDTHxHEIGHT format (e.g., 1000x1000). Can be specified multiple times', (value, previous: string[]) => {
+    return [...previous, value];
+  }, [])
   .option('-c, --concurrency <number>', 'Number of parallel screenshots', '8')
   .option('-t, --timeout <seconds>', 'Page load timeout in seconds', '30')
   .argument('<urls...>', 'URLs to capture')
@@ -51,6 +47,11 @@ program
 
 const options = program.opts<Options>();
 const urls = program.args;
+
+// If no size is specified, use default
+if (options.size.length === 0) {
+  options.size = ['1440x1080'];
+}
 
 const parseSize = (sizeStr: string): Size => {
   const match = sizeStr.match(/^(\d+)x(\d+)$/);
