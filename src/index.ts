@@ -126,7 +126,7 @@ const takeScreenshot = async (task: ScreenshotTask, outputDir: string, totalTask
     const urlIndexStr = String(task.urlIndex + 1).padStart(2, '0');
     
     const baseFilename = totalTasks > 1 
-      ? `${sizeIndexStr}_${urlIndexStr}_${timestamp}_${task.size.width}x${task.size.height}_${hostname}${pathname || ''}` 
+      ? `${urlIndexStr}_${sizeIndexStr}_${timestamp}_${task.size.width}x${task.size.height}_${hostname}${pathname || ''}`
       : `${timestamp}_${task.size.width}x${task.size.height}_${hostname}${pathname || ''}`;
     
     const pngFilename = `${baseFilename}.png`;
